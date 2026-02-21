@@ -12,18 +12,20 @@
     "modules-left": [
         "custom/logo",
         "niri/workspaces",
-        "niri/window"
+        "mpris"
     ],
     "modules-center": [
         "clock"
     ],
     "modules-right": [
         "tray",
-        "battery",
+        "backlight",
         "pulseaudio",
+        "bluetooth",
         "network",
         "cpu",
         "memory",
+        "battery",
         "custom/power"
     ],
     // ── Left ──────────────────────────────────────────────
@@ -35,26 +37,6 @@
     "niri/workspaces": {
         "format": "{index}",
         "on-click": "activate"
-    },
-    "niri/window": {
-        "format": "{}",
-        "max-length": 35,
-        "rewrite": {
-            "(.*) — Mozilla Firefox": "󰈹  $1",
-            "(.*) - Visual Studio Code": "󰨞  $1",
-            "(.*) - Brave": "󰖟  $1",
-            "(.*) — Ghostty": "󰊠  $1",
-            "(.*) — Alacritty": "  $1",
-            "(.*) - Thunar": "󰉋  $1",
-            "(.*) - Discord": "󰙯  $1",
-            "(.*) - Spotify": "󰓇  $1",
-            "(.*) - Telegram": "  $1",
-            "(.*) - Obsidian(.*)": "󱓧  $1",
-            "(.*) - Zed": "  $1",
-            "(.*) - Chromium": "  $1",
-            "(.*) - Google Chrome": "  $1",
-            "(.*)": "  $1"
-        }
     },
     // ── Center ───────────────────────────────────────────
     "clock": {
@@ -81,6 +63,38 @@
         }
     },
     // ── Right ────────────────────────────────────────────
+    "mpris": {
+        "format": "{player_icon}  {title}",
+        "format-paused": "{status_icon}  <i>{title}</i>",
+        "format-stopped": "",
+        "format-disconnected": "",
+        "player-icons": {
+            "default": "󰎆",
+            "spotify": "󰓇",
+            "firefox": "󰈹",
+            "mpv": "󰐹"
+        },
+        "status-icons": {
+            "paused": "󰏤"
+        },
+        "max-length": 40
+    },
+    "backlight": {
+        "format": "{icon}  {percent}%",
+        "format-icons": [
+            "󰃞",
+            "󰃟",
+            "󰃠"
+        ],
+        "on-scroll-up": "brightnessctl set +2%",
+        "on-scroll-down": "brightnessctl set 2%-"
+    },
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱  {device_alias}",
+        "on-click": "blueman-manager",
+        "on-click-right": "rfkill toggle bluetooth"
+    },
     "tray": {
         "icon-size": 15,
         "spacing": 8
@@ -96,7 +110,7 @@
         "format-plugged": "󰚥  {capacity}%",
         "format-full": "󱟢  Full",
         "format-icons": [
-            "�",
+            "󰂎",
             "󰁺",
             "󰁻",
             "󰁼",
@@ -112,7 +126,7 @@
     },
     "pulseaudio": {
         "format": "{icon}  {volume}%",
-        "format-bluetooth": "�  {volume}%",
+        "format-bluetooth": "󰂰  {volume}%",
         "format-muted": "󰸈  Muted",
         "format-icons": {
             "headphone": "󰋋",
@@ -120,17 +134,18 @@
             "headset": "󰋎",
             "default": [
                 "󰕿",
-                "�",
+                "󰖀",
                 "󰕾"
             ]
         },
         "scroll-step": 5,
         "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         "tooltip-format": "{desc}"
     },
     "network": {
         "format-wifi": "󰖩",
-        "format-ethernet": "�",
+        "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
         "format-alt": "󰜮  {bandwidthDownBits}  󰜷  {bandwidthUpBits}",
         "tooltip-format": "{essid}\nInterface: {ifname}\nIP: {ipaddr}/{cidr}\nSignal: {signalStrength}%",
@@ -158,6 +173,6 @@
     "custom/power": {
         "format": "󰐥",
         "tooltip": false,
-        "on-click": "wlogout"
+        "on-click": "niri msg action quit"
     }
 }
