@@ -1,5 +1,5 @@
 // ╔══════════════════════════════════════════════════════════════╗
-// ║             Eww Widgets — Catppuccin Macchiato               ║
+// ║             Eww Widgets - Catppuccin Macchiato               ║
 // ╚══════════════════════════════════════════════════════════════╝
 
 // ── Colors (Catppuccin Macchiato) ────────────────────────────────
@@ -39,6 +39,14 @@ $crust: #181926;
     border: 1px solid rgba($surface1, 0.5);
     border-radius: 16px;
     padding: 16px 20px;
+    box-shadow: 0 8px 24px rgba($mantle, 0.6);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    &:hover {
+        background: rgba($base, 0.95);
+        border: 1px solid rgba($surface2, 0.8);
+        box-shadow: 0 12px 32px rgba($crust, 0.8);
+    }
 }
 
 .card-title {
@@ -204,13 +212,13 @@ $crust: #181926;
 
     .stat-bar-track {
         min-height: 8px;
-        border-radius: 4px;
-        background: $surface0;
+        border-radius: 8px;
+        background: rgba($surface0, 0.6);
     }
 
     .stat-bar-fill {
         min-height: 8px;
-        border-radius: 4px;
+        border-radius: 8px;
     }
 
     .stat-fill-blue {
@@ -231,8 +239,11 @@ $crust: #181926;
 .music-card {
     @include card;
 
-    &.music-hidden {
-        opacity: 0.4;
+    &.music-stopped {
+        .music-title {
+            color: $subtext0;
+            font-style: italic;
+        }
     }
 
     .music-info {
@@ -319,9 +330,9 @@ $crust: #181926;
 
         &.highlight {
             color: $base;
-            background: $teal;
-            border-radius: 6px;
-            font-weight: 700;
+            background: $green;
+            border-radius: 8px;
+            font-weight: 800;
         }
     }
 }
@@ -330,5 +341,14 @@ $crust: #181926;
 
 * {
     all: unset;
-    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", "Noto Sans", sans-serif;
+    font-family: "Inter", "Roboto", "Segoe UI", "JetBrainsMono Nerd Font", "JetBrains Mono", "Noto Sans", sans-serif;
+    transition: all 0.2s ease-in-out;
+}
+
+label.clock-hour,
+label.clock-min,
+label.stat-value,
+label.bv-value,
+label.uptime-value {
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
 }

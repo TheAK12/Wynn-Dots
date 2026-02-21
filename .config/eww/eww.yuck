@@ -1,11 +1,11 @@
 ;; ╔══════════════════════════════════════════════════════════════╗
-;; ║               Eww Desktop Widgets — Catppuccin              ║
+;; ║               Eww Desktop Widgets - Catppuccin              ║
 ;; ╚══════════════════════════════════════════════════════════════╝
 
 ;; ── Variables ────────────────────────────────────────────────────
 
 ;; Time & Date
-(defpoll time-hour :interval "1s" "date '+%I'")
+(defpoll time-hour :interval "1s" "date '+%H'")
 (defpoll time-min  :interval "1s" "date '+%M'")
 (defpoll time-ampm :interval "1s" "date '+%p'")
 (defpoll date-day  :interval "60s" "date '+%A'")
@@ -44,13 +44,13 @@
 
 ;; ── Clock Widget ─────────────────────────────────────────────────
 
+
 (defwidget clock-widget []
   (box :class "clock-card" :orientation "v" :space-evenly false
     (box :class "clock-time" :orientation "h" :space-evenly false :halign "center"
       (label :class "clock-hour" :text time-hour)
       (label :class "clock-colon" :text ":")
-      (label :class "clock-min" :text time-min)
-      (label :class "clock-ampm" :text time-ampm))
+      (label :class "clock-min" :text time-min))
     (label :class "clock-day" :text date-day)
     (label :class "clock-date" :text date-full)))
 
@@ -72,7 +72,7 @@
     ;; Volume half
     (box :class "bv-section" :orientation "v" :space-evenly false
       (label :class "bv-icon bv-vol-icon"
-        :text {volume-muted == "yes" ? "󰖁" : volume-level > 50 ? "" : ""})
+        :text {volume-muted == "yes" ? "󰖁" : volume-level > 50 ? "󰕾" : volume-level > 0 ? "󰖀" : "󰕿"})
       (label :class "bv-value" :text "${volume-level}%")
       (label :class "bv-label" :text {volume-muted == "yes" ? "Muted" : "Volume"}))))
 
@@ -93,9 +93,9 @@
 (defwidget system-monitor []
   (box :class "sysmon-card" :orientation "v" :space-evenly false
     (label :class "card-title" :text "SYSTEM MONITOR" :halign "start")
-    (stat-bar :value cpu-usage :label "CPU" :color "blue" :icon "󰍛" :sublabel "${cpu-usage}%")
-    (stat-bar :value ram-usage :label "RAM" :color "mauve" :icon "󰘚" :sublabel "${ram-used}/${ram-total}")
-    (stat-bar :value disk-usage :label "Disk" :color "green" :icon "󰋊" :sublabel "${disk-used}/${disk-total}")))
+    (stat-bar :value cpu-usage :label "CPU" :color "blue" :icon "󰍛" :sublabel "${cpu-usage}%" :tooltip "CPU Total Usage")
+    (stat-bar :value ram-usage :label "RAM" :color "mauve" :icon "󰘚" :sublabel "${ram-used}/${ram-total}" :tooltip "RAM Allocated/Total")
+    (stat-bar :value disk-usage :label "Disk" :color "green" :icon "󰋊" :sublabel "${disk-used}/${disk-total}" :tooltip "Root Partition Used/Total")))
 
 
 ;; ── Uptime Widget ────────────────────────────────────────────────
@@ -111,17 +111,18 @@
 ;; ── Music Player Widget ──────────────────────────────────────────
 
 (defwidget music-player []
-  (box :class "music-card ${music-status == 'Stopped' ? 'music-hidden' : ''}"
+  (box :class "music-card ${music-status == 'Stopped' ? 'music-stopped' : ''}"
        :orientation "v" :space-evenly false
     (label :class "card-title" :text "NOW PLAYING" :halign "start")
     (box :class "music-info" :orientation "v" :space-evenly false
-      (label :class "music-title" :text music-title :limit-width 25 :halign "start")
-      (label :class "music-artist" :text music-artist :limit-width 30 :halign "start"))
-    (box :class "music-controls" :orientation "h" :space-evenly true :halign "center"
-      (button :class "music-btn" :onclick "playerctl previous" "󰒮")
-      (button :class "music-btn music-play" :onclick "playerctl play-pause"
-        {music-status == "Playing" ? "󰏤" : "󰐊"})
-      (button :class "music-btn" :onclick "playerctl next" "󰒭"))))
+      (label :class "music-title" :text music-title :limit-width 25 :halign "start" :tooltip music-title)
+      (label :class "music-artist" :text music-artist :limit-width 30 :halign "start" :tooltip music-artist))
+    (revealer :transition "slidedown" :reveal {music-status != "Stopped"} :duration "300ms"
+      (box :class "music-controls" :orientation "h" :space-evenly true :halign "center"
+        (button :class "music-btn hover-effect" :onclick "playerctl previous" "󰒮")
+        (button :class "music-btn music-play hover-effect" :onclick "playerctl play-pause"
+          {music-status == "Playing" ? "󰏤" : "󰐊"})
+        (button :class "music-btn hover-effect" :onclick "playerctl next" "󰒭")))))
 
 
 ;; ── Calendar Widget ──────────────────────────────────────────────
@@ -175,7 +176,7 @@
 
 (defwindow music-player
   :monitor 0
-  :geometry (geometry :x "14px" :y "560px" :width "320px" :anchor "top right")
+  :geometry (geometry :x "14px" :y "850px" :width "320px" :anchor "top right")
   :stacking "bottom"
   :exclusive false
   :focusable false
@@ -183,7 +184,7 @@
 
 (defwindow calendar
   :monitor 0
-  :geometry (geometry :x "14px" :y "735px" :width "320px" :anchor "top right")
+  :geometry (geometry :x "14px" :y "560px" :width "320px" :anchor "top right")
   :stacking "bottom"
   :exclusive false
   :focusable false

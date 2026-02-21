@@ -6,11 +6,21 @@ get_status() {
 }
 
 get_title() {
-    playerctl metadata title 2>/dev/null || echo ""
+    title=$(playerctl metadata title 2>/dev/null)
+    if [ -z "$title" ]; then
+        echo "No Media Playing"
+    else
+        echo "$title"
+    fi
 }
 
 get_artist() {
-    playerctl metadata artist 2>/dev/null || echo ""
+    artist=$(playerctl metadata artist 2>/dev/null)
+    if [ -z "$artist" ]; then
+        echo "Start a player to see info"
+    else
+        echo "$artist"
+    fi
 }
 
 get_art() {
