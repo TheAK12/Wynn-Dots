@@ -46,12 +46,12 @@ Ensure you have the **JetBrainsMono Nerd Font** installed and set as the default
 
 ## 📦 Dependencies
 This config invokes several external applications and utilities for its shortcuts. You'll need the following installed for all modules to work flawlessly:
-*   `vicinae` — Application launcher toggle
-*   `niri` — To switch and manage workspaces (Niri Wayland Compositor)
-*   `brightnessctl` — To control screen backlight with the scroll wheel
-*   `blueman-manager` *and* `rfkill` — To open the Bluetooth GUI and hardware toggle
-*   `pavucontrol` *and* `wpctl` (WirePlumber / PipeWire) — For volume mixer and instant hardware muting
-*   `nm-connection-editor` — Network Manager GUI frontend
+*   `vicinae` - Application launcher toggle
+*   `niri` - To switch and manage workspaces (Niri Wayland Compositor)
+*   `brightnessctl` - To control screen backlight with the scroll wheel
+*   `blueman-manager` *and* `rfkill` - To open the Bluetooth GUI and hardware toggle
+*   `pavucontrol` *and* `wpctl` (WirePlumber / PipeWire) - For volume mixer and instant hardware muting
+*   `nm-connection-editor` - Network Manager GUI frontend
 
 ## 🔧 Installation / Reloading
 If you make changes to this `config.jsonc` or its parent `style.css`, simply reload the bar without restarting your display manager by running:
