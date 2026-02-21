@@ -1,0 +1,190 @@
+;; ╔══════════════════════════════════════════════════════════════╗
+;; ║               Eww Desktop Widgets — Catppuccin              ║
+;; ╚══════════════════════════════════════════════════════════════╝
+
+;; ── Variables ────────────────────────────────────────────────────
+
+;; Time & Date
+(defpoll time-hour :interval "1s" "date '+%I'")
+(defpoll time-min  :interval "1s" "date '+%M'")
+(defpoll time-ampm :interval "1s" "date '+%p'")
+(defpoll date-day  :interval "60s" "date '+%A'")
+(defpoll date-full :interval "60s" "date '+%B %d, %Y'")
+
+;; System Stats
+(defpoll cpu-usage  :interval "2s" :initial "0" "top -bn1 | grep 'Cpu(s)' | awk '{printf \"%.0f\", $2}'")
+(defpoll ram-usage  :interval "5s" :initial "0" "free | awk '/Mem:/ {printf \"%.0f\", $3/$2 * 100}'")
+(defpoll disk-usage :interval "30s" :initial "0" "df -h / | awk 'NR==2 {gsub(/%/,\"\"); print $5}'")
+(defpoll ram-used   :interval "5s" :initial "0G" "free -h | awk '/Mem:/ {print $3}'")
+(defpoll ram-total  :interval "60s" :initial "0G" "free -h | awk '/Mem:/ {print $2}'")
+(defpoll disk-used  :interval "30s" :initial "0G" "df -h / | awk 'NR==2 {print $3}'")
+(defpoll disk-total :interval "60s" :initial "0G" "df -h / | awk 'NR==2 {print $2}'")
+
+;; Battery
+(defpoll bat-capacity :interval "10s" :initial "0" "cat /sys/class/power_supply/BAT*/capacity 2>/dev/null || echo 0")
+(defpoll bat-status   :interval "10s" :initial "Discharging" "cat /sys/class/power_supply/BAT*/status 2>/dev/null || echo Unknown")
+
+;; Volume
+(defpoll volume-level :interval "1s" :initial "0" "wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | awk '{printf \"%.0f\", $2 * 100}'")
+(defpoll volume-muted :interval "1s" :initial "no" "wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | grep -q MUTED && echo yes || echo no")
+
+;; Uptime
+(defpoll uptime-text :interval "60s" :initial "0m" "uptime -p | sed 's/up //' | sed 's/ hours\\?/h/;s/ minutes\\?/m/;s/ days\\?/d/;s/, / /g'")
+
+;; Music
+(defpoll music-status :interval "1s" "~/.config/eww/scripts/get_music.sh status")
+(defpoll music-title  :interval "1s" "~/.config/eww/scripts/get_music.sh title")
+(defpoll music-artist :interval "1s" "~/.config/eww/scripts/get_music.sh artist")
+
+;; Calendar
+(defpoll calendar-day   :interval "3600s" :initial "1" "date '+%-d'")
+(defpoll calendar-month :interval "3600s" :initial "1" "date '+%-m'")
+(defpoll calendar-year  :interval "3600s" :initial "2026" "date '+%Y'")
+
+
+;; ── Clock Widget ─────────────────────────────────────────────────
+
+(defwidget clock-widget []
+  (box :class "clock-card" :orientation "v" :space-evenly false
+    (box :class "clock-time" :orientation "h" :space-evenly false :halign "center"
+      (label :class "clock-hour" :text time-hour)
+      (label :class "clock-colon" :text ":")
+      (label :class "clock-min" :text time-min)
+      (label :class "clock-ampm" :text time-ampm))
+    (label :class "clock-day" :text date-day)
+    (label :class "clock-date" :text date-full)))
+
+
+;; ── Battery & Volume Widget ──────────────────────────────────────
+
+(defwidget battery-volume []
+  (box :class "battvol-card" :orientation "h" :space-evenly true
+    ;; Battery half
+    (box :class "bv-section" :orientation "v" :space-evenly false
+      (label :class "bv-icon bv-bat-icon"
+        :text {bat-status == "Charging" ? "󰂄" :
+               bat-capacity > 80 ? "󰁹" :
+               bat-capacity > 60 ? "󰂀" :
+               bat-capacity > 40 ? "󰁾" :
+               bat-capacity > 20 ? "󰁼" : "󰂎"})
+      (label :class "bv-value" :text "${bat-capacity}%")
+      (label :class "bv-label" :text {bat-status == "Charging" ? "Charging" : "Battery"}))
+    ;; Volume half
+    (box :class "bv-section" :orientation "v" :space-evenly false
+      (label :class "bv-icon bv-vol-icon"
+        :text {volume-muted == "yes" ? "󰖁" : volume-level > 50 ? "" : ""})
+      (label :class "bv-value" :text "${volume-level}%")
+      (label :class "bv-label" :text {volume-muted == "yes" ? "Muted" : "Volume"}))))
+
+
+;; ── System Monitor Widget ────────────────────────────────────────
+
+(defwidget stat-bar [value label color icon sublabel]
+  (box :class "stat-item" :orientation "v" :space-evenly false
+    (box :class "stat-header" :orientation "h" :space-evenly false
+      (label :class "stat-icon stat-icon-${color}" :text icon)
+      (label :class "stat-label" :text label)
+      (box :hexpand true)
+      (label :class "stat-value" :text sublabel))
+    (box :class "stat-bar-track"
+      (box :class "stat-bar-fill stat-fill-${color}" :hexpand false
+        :style "min-width: ${value * 2.4}px;"))))
+
+(defwidget system-monitor []
+  (box :class "sysmon-card" :orientation "v" :space-evenly false
+    (label :class "card-title" :text "SYSTEM MONITOR" :halign "start")
+    (stat-bar :value cpu-usage :label "CPU" :color "blue" :icon "󰍛" :sublabel "${cpu-usage}%")
+    (stat-bar :value ram-usage :label "RAM" :color "mauve" :icon "󰘚" :sublabel "${ram-used}/${ram-total}")
+    (stat-bar :value disk-usage :label "Disk" :color "green" :icon "󰋊" :sublabel "${disk-used}/${disk-total}")))
+
+
+;; ── Uptime Widget ────────────────────────────────────────────────
+
+(defwidget uptime-widget []
+  (box :class "uptime-card" :orientation "h" :space-evenly false
+    (label :class "uptime-icon" :text "󰅐")
+    (box :orientation "v" :space-evenly false
+      (label :class "uptime-label" :text "UPTIME" :halign "start")
+      (label :class "uptime-value" :text uptime-text :halign "start"))))
+
+
+;; ── Music Player Widget ──────────────────────────────────────────
+
+(defwidget music-player []
+  (box :class "music-card ${music-status == 'Stopped' ? 'music-hidden' : ''}"
+       :orientation "v" :space-evenly false
+    (label :class "card-title" :text "NOW PLAYING" :halign "start")
+    (box :class "music-info" :orientation "v" :space-evenly false
+      (label :class "music-title" :text music-title :limit-width 25 :halign "start")
+      (label :class "music-artist" :text music-artist :limit-width 30 :halign "start"))
+    (box :class "music-controls" :orientation "h" :space-evenly true :halign "center"
+      (button :class "music-btn" :onclick "playerctl previous" "󰒮")
+      (button :class "music-btn music-play" :onclick "playerctl play-pause"
+        {music-status == "Playing" ? "󰏤" : "󰐊"})
+      (button :class "music-btn" :onclick "playerctl next" "󰒭"))))
+
+
+;; ── Calendar Widget ──────────────────────────────────────────────
+
+(defwidget cal-widget []
+  (box :class "cal-card" :orientation "v" :space-evenly false
+    (label :class "card-title" :text "CALENDAR" :halign "start")
+    (calendar :class "cal"
+      :day calendar-day
+      :month calendar-month
+      :year calendar-year
+      :show-heading true
+      :show-day-names true)))
+
+
+;; ═══════════════════════════════════════════════════════════════
+;; ══ Windows ════════════════════════════════════════════════════
+;; ═══════════════════════════════════════════════════════════════
+
+(defwindow clock
+  :monitor 0
+  :geometry (geometry :x "14px" :y "10px" :width "320px" :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (clock-widget))
+
+(defwindow battery-volume
+  :monitor 0
+  :geometry (geometry :x "14px" :y "160px" :width "320px" :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (battery-volume))
+
+(defwindow system-monitor
+  :monitor 0
+  :geometry (geometry :x "14px" :y "300px" :width "320px" :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (system-monitor))
+
+(defwindow uptime
+  :monitor 0
+  :geometry (geometry :x "14px" :y "488px" :width "320px" :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (uptime-widget))
+
+(defwindow music-player
+  :monitor 0
+  :geometry (geometry :x "14px" :y "560px" :width "320px" :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (music-player))
+
+(defwindow calendar
+  :monitor 0
+  :geometry (geometry :x "14px" :y "735px" :width "320px" :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (cal-widget))

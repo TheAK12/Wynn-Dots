@@ -1,0 +1,334 @@
+// ╔══════════════════════════════════════════════════════════════╗
+// ║             Eww Widgets — Catppuccin Macchiato               ║
+// ╚══════════════════════════════════════════════════════════════╝
+
+// ── Colors (Catppuccin Macchiato) ────────────────────────────────
+
+$rosewater: #f4dbd6;
+$flamingo: #f0c6c6;
+$pink: #f5bde6;
+$mauve: #c6a0f6;
+$red: #ed8796;
+$maroon: #ee99a0;
+$peach: #f5a97f;
+$yellow: #eed49f;
+$green: #a6da95;
+$teal: #8bd5ca;
+$sky: #91d7e3;
+$sapphire: #7dc4e4;
+$blue: #8aadf4;
+$lavender: #b7bdf8;
+
+$text: #cad3f5;
+$subtext1: #b8c0e0;
+$subtext0: #a5adcb;
+$overlay2: #939ab7;
+$overlay1: #8087a2;
+$overlay0: #6e738d;
+$surface2: #5b6078;
+$surface1: #494d64;
+$surface0: #363a4f;
+$base: #24273a;
+$mantle: #1e2030;
+$crust: #181926;
+
+// ── Shared Card Style ────────────────────────────────────────────
+
+@mixin card {
+    background: rgba($base, 0.85);
+    border: 1px solid rgba($surface1, 0.5);
+    border-radius: 16px;
+    padding: 16px 20px;
+}
+
+.card-title {
+    color: $subtext0;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+// ── Clock ────────────────────────────────────────────────────────
+
+.clock-card {
+    @include card;
+
+    .clock-time {
+        margin-bottom: 4px;
+    }
+
+    .clock-hour,
+    .clock-min {
+        font-size: 48px;
+        font-weight: 700;
+        color: $text;
+        min-width: 80px;
+    }
+
+    .clock-colon {
+        font-size: 44px;
+        font-weight: 700;
+        color: $mauve;
+        margin: 0 2px;
+        padding-bottom: 4px;
+    }
+
+    .clock-ampm {
+        font-size: 14px;
+        font-weight: 600;
+        color: $mauve;
+        margin-left: 6px;
+        margin-top: 18px;
+    }
+
+    .clock-day {
+        font-size: 16px;
+        font-weight: 600;
+        color: $teal;
+        margin-bottom: 2px;
+    }
+
+    .clock-date {
+        font-size: 13px;
+        color: $subtext0;
+    }
+}
+
+// ── Battery & Volume ─────────────────────────────────────────────
+
+.battvol-card {
+    @include card;
+
+    .bv-section {
+        padding: 8px 4px;
+    }
+
+    .bv-icon {
+        font-size: 28px;
+        margin-bottom: 4px;
+    }
+
+    .bv-bat-icon {
+        color: $green;
+    }
+
+    .bv-vol-icon {
+        color: $sapphire;
+    }
+
+    .bv-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: $text;
+    }
+
+    .bv-label {
+        font-size: 11px;
+        color: $subtext0;
+        margin-top: 2px;
+    }
+}
+
+// ── Uptime ───────────────────────────────────────────────────────
+
+.uptime-card {
+    @include card;
+    padding: 12px 20px;
+
+    .uptime-icon {
+        font-size: 24px;
+        color: $peach;
+        margin-right: 14px;
+    }
+
+    .uptime-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: $subtext0;
+    }
+
+    .uptime-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: $text;
+        margin-top: 2px;
+    }
+}
+
+// ── System Monitor ───────────────────────────────────────────────
+
+
+.sysmon-card {
+    @include card;
+
+    .stat-item {
+        margin-bottom: 10px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .stat-header {
+        margin-bottom: 6px;
+    }
+
+    .stat-icon {
+        font-size: 14px;
+        margin-right: 8px;
+    }
+
+    .stat-icon-blue {
+        color: $sapphire;
+    }
+
+    .stat-icon-mauve {
+        color: $mauve;
+    }
+
+    .stat-icon-green {
+        color: $green;
+    }
+
+    .stat-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: $subtext1;
+    }
+
+    .stat-value {
+        font-size: 12px;
+        font-weight: 600;
+        color: $text;
+    }
+
+    .stat-bar-track {
+        min-height: 8px;
+        border-radius: 4px;
+        background: $surface0;
+    }
+
+    .stat-bar-fill {
+        min-height: 8px;
+        border-radius: 4px;
+    }
+
+    .stat-fill-blue {
+        background: $sapphire;
+    }
+
+    .stat-fill-mauve {
+        background: $mauve;
+    }
+
+    .stat-fill-green {
+        background: $green;
+    }
+}
+
+// ── Music Player ─────────────────────────────────────────────────
+
+.music-card {
+    @include card;
+
+    &.music-hidden {
+        opacity: 0.4;
+    }
+
+    .music-info {
+        margin-bottom: 12px;
+    }
+
+    .music-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: $text;
+        margin-bottom: 2px;
+    }
+
+    .music-artist {
+        font-size: 13px;
+        color: $subtext0;
+    }
+
+    .music-controls {
+        margin-top: 4px;
+    }
+
+    .music-btn {
+        font-size: 22px;
+        color: $subtext1;
+        background: transparent;
+        border: none;
+        border-radius: 50%;
+        padding: 6px 14px;
+
+        &:hover {
+            color: $mauve;
+            background: rgba($mauve, 0.1);
+        }
+    }
+
+    .music-play {
+        font-size: 28px;
+        color: $mauve;
+
+        &:hover {
+            color: $lavender;
+        }
+    }
+}
+
+// ── Calendar ─────────────────────────────────────────────────────
+
+.cal-card {
+    @include card;
+
+    .cal {
+        color: $text;
+        font-size: 12px;
+        padding: 4px;
+
+        &:selected {
+            color: $base;
+            background: $mauve;
+            border-radius: 6px;
+        }
+
+        &:indeterminate {
+            color: $surface2;
+        }
+
+        &.header {
+            color: $mauve;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        &.button {
+            color: $subtext0;
+            background: transparent;
+            border: none;
+
+            &:hover {
+                color: $mauve;
+                background: rgba($mauve, 0.1);
+                border-radius: 6px;
+            }
+        }
+
+        &.highlight {
+            color: $base;
+            background: $teal;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+    }
+}
+
+// ── Global ───────────────────────────────────────────────────────
+
+* {
+    all: unset;
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", "Noto Sans", sans-serif;
+}

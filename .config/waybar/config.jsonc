@@ -1,0 +1,163 @@
+// Waybar Configuration — Floating Pills Design
+{
+    "layer": "top",
+    "position": "top",
+    "height": 44,
+    "spacing": 4,
+    "margin-top": 2,
+    "margin-bottom": 2,
+    "margin-left": 2,
+    "margin-right": 2,
+    "exclusive": true,
+    "modules-left": [
+        "custom/logo",
+        "niri/workspaces",
+        "niri/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "tray",
+        "battery",
+        "pulseaudio",
+        "network",
+        "cpu",
+        "memory",
+        "custom/power"
+    ],
+    // ── Left ──────────────────────────────────────────────
+    "custom/logo": {
+        "format": "󰣇",
+        "tooltip": false,
+        "on-click": "vicinae toggle"
+    },
+    "niri/workspaces": {
+        "format": "{index}",
+        "on-click": "activate"
+    },
+    "niri/window": {
+        "format": "{}",
+        "max-length": 35,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "󰈹  $1",
+            "(.*) - Visual Studio Code": "󰨞  $1",
+            "(.*) - Brave": "󰖟  $1",
+            "(.*) — Ghostty": "󰊠  $1",
+            "(.*) — Alacritty": "  $1",
+            "(.*) - Thunar": "󰉋  $1",
+            "(.*) - Discord": "󰙯  $1",
+            "(.*) - Spotify": "󰓇  $1",
+            "(.*) - Telegram": "  $1",
+            "(.*) - Obsidian(.*)": "󱓧  $1",
+            "(.*) - Zed": "  $1",
+            "(.*) - Chromium": "  $1",
+            "(.*) - Google Chrome": "  $1",
+            "(.*)": "  $1"
+        }
+    },
+    // ── Center ───────────────────────────────────────────
+    "clock": {
+        "format": "󰅐  {:%I:%M %p}",
+        "format-alt": "󰃶  {:%A, %B %d}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#cba6f7'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'>{}</span>",
+                "weeks": "<span color='#94e2d5'><b>W{}</b></span>",
+                "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    // ── Right ────────────────────────────────────────────
+    "tray": {
+        "icon-size": 15,
+        "spacing": 8
+    },
+    "battery": {
+        "states": {
+            "good": 80,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󱐋  {capacity}%",
+        "format-plugged": "󰚥  {capacity}%",
+        "format-full": "󱟢  Full",
+        "format-icons": [
+            "�",
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ],
+        "tooltip-format": "Battery: {capacity}%\nPower: {power:.1f}W\nTime: {timeTo}"
+    },
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-bluetooth": "�  {volume}%",
+        "format-muted": "󰸈  Muted",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
+            "default": [
+                "󰕿",
+                "�",
+                "󰕾"
+            ]
+        },
+        "scroll-step": 5,
+        "on-click": "pavucontrol",
+        "tooltip-format": "{desc}"
+    },
+    "network": {
+        "format-wifi": "󰖩",
+        "format-ethernet": "�",
+        "format-disconnected": "󰖪",
+        "format-alt": "󰜮  {bandwidthDownBits}  󰜷  {bandwidthUpBits}",
+        "tooltip-format": "{essid}\nInterface: {ifname}\nIP: {ipaddr}/{cidr}\nSignal: {signalStrength}%",
+        "interval": 5,
+        "on-click-right": "nm-connection-editor"
+    },
+    "cpu": {
+        "format": "󰍛  {usage}%",
+        "interval": 2,
+        "tooltip-format": "CPU Usage: {usage}%\n{avg_frequency} GHz",
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
+    },
+    "memory": {
+        "format": "󰘚  {percentage}%",
+        "interval": 5,
+        "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
+    },
+    "custom/power": {
+        "format": "󰐥",
+        "tooltip": false,
+        "on-click": "wlogout"
+    }
+}

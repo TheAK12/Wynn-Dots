@@ -1,0 +1,297 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║        Waybar — Floating Pill Modules (Catppuccin)          ║
+   ║        Inspired by separated capsule / island design        ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── Catppuccin Mocha Palette ─────────────────────────────────── */
+@define-color bg-solid #1e1e2e;
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color surface2 #585b70;
+@define-color overlay0 #6c7086;
+@define-color text #cdd6f4;
+@define-color subtext0 #a6adc8;
+@define-color subtext1 #bac2de;
+@define-color mauve #cba6f7;
+@define-color red #f38ba8;
+@define-color maroon #eba0ac;
+@define-color peach #fab387;
+@define-color yellow #f9e2af;
+@define-color green #a6e3a1;
+@define-color teal #94e2d5;
+@define-color sky #89dceb;
+@define-color sapphire #74c7ec;
+@define-color blue #89b4fa;
+@define-color lavender #b4befe;
+@define-color pink #f5c2e7;
+
+/* ── Global ── transparent bar, pills float on top ────────────── */
+window#waybar {
+    background: transparent;
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", "Noto Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: @text;
+}
+
+window#waybar>box {
+    background: rgba(30, 30, 46, 1);
+    border-radius: 14px;
+    padding: 2px 8px;
+}
+
+/* ── Tooltip ──────────────────────────────────────────────────── */
+tooltip {
+    background: @bg-solid;
+    border: 1px solid @surface1;
+    border-radius: 12px;
+    padding: 8px 14px;
+}
+
+tooltip label {
+    color: @text;
+    font-size: 12px;
+}
+
+/* ── Base Pill Shape ──────────────────────────────────────────── */
+#workspaces,
+#window,
+#clock,
+#battery,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#tray,
+#custom-logo,
+#custom-power {
+    padding: 0 14px;
+    margin: 6px 3px;
+    border-radius: 10px;
+    background: @surface0;
+    transition: all 250ms ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LEFT — Logo + Workspaces + Window
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Logo Pill ────────────────────────────────────────────────── */
+#custom-logo {
+    font-size: 15px;
+    color: @mauve;
+    background: @surface0;
+    padding: 0 10px;
+    margin-left: 4px;
+}
+
+#custom-logo:hover {
+    background: @surface1;
+}
+
+/* ── Workspaces Pill ──────────────────────────────────────────── */
+#workspaces {
+    background: @surface0;
+    padding: 0 4px;
+}
+
+#workspaces button {
+    color: @subtext0;
+    padding: 0 10px;
+    margin: 4px 2px;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 24px;
+    transition: all 250ms ease;
+}
+
+#workspaces button:hover {
+    color: @text;
+    background: @surface1;
+}
+
+#workspaces button.active {
+    color: @bg-solid;
+    background: @mauve;
+    font-weight: 700;
+    min-width: 26px;
+}
+
+#workspaces button.urgent {
+    color: @bg-solid;
+    background: @red;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Window Title ─────────────────────────────────────────────── */
+#window {
+    color: @subtext0;
+    font-weight: 500;
+    font-size: 12px;
+    background: @surface0;
+    padding: 0 16px;
+}
+
+window#waybar.empty #window {
+    background: transparent;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CENTER — Clock
+   ═══════════════════════════════════════════════════════════════ */
+
+#clock {
+    font-weight: 700;
+    font-size: 13px;
+    color: @bg-solid;
+    background: @teal;
+    padding: 0 20px;
+}
+
+#clock:hover {
+    background: @sky;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RIGHT — Status pills
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Tray ─────────────────────────────────────────────────────── */
+#tray {
+    background: @surface0;
+    padding: 0 10px;
+}
+
+#tray>.passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray>.needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+/* ── Battery — Green Pill ─────────────────────────────────────── */
+#battery {
+    color: @bg-solid;
+    background: @green;
+}
+
+#battery:hover {
+    background: @teal;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: @bg-solid;
+    background: @green;
+}
+
+#battery.warning:not(.charging) {
+    background: @yellow;
+    color: @bg-solid;
+}
+
+#battery.critical:not(.charging) {
+    background: @red;
+    color: @bg-solid;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Audio — Peach Pill ───────────────────────────────────────── */
+#pulseaudio {
+    color: @bg-solid;
+    background: @peach;
+}
+
+#pulseaudio:hover {
+    background: @yellow;
+}
+
+#pulseaudio.muted {
+    color: @text;
+    background: @surface1;
+}
+
+/* ── Network — Mauve Pill ─────────────────────────────────────── */
+#network {
+    color: @bg-solid;
+    background: @mauve;
+    padding: 0 14px;
+}
+
+#network:hover {
+    background: @lavender;
+}
+
+#network.disconnected {
+    color: @text;
+    background: @surface1;
+}
+
+/* ── CPU — Sky Pill ───────────────────────────────────────────── */
+#cpu {
+    color: @bg-solid;
+    background: @sapphire;
+}
+
+#cpu:hover {
+    background: @sky;
+}
+
+#cpu.warning {
+    background: @yellow;
+}
+
+#cpu.critical {
+    background: @red;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Memory — Blue Pill ───────────────────────────────────────── */
+#memory {
+    color: @bg-solid;
+    background: @blue;
+}
+
+#memory:hover {
+    background: @lavender;
+}
+
+#memory.warning {
+    background: @yellow;
+}
+
+#memory.critical {
+    background: @red;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Power — Red Pill ─────────────────────────────────────────── */
+#custom-power {
+    font-size: 14px;
+    color: @bg-solid;
+    background: @red;
+    padding: 0 12px;
+    margin-right: 4px;
+}
+
+#custom-power:hover {
+    background: @maroon;
+}
+
+/* ── Animations ───────────────────────────────────────────────── */
+@keyframes pulse {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.55;
+    }
+}
