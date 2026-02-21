@@ -28,7 +28,8 @@
 /* ── Global ── transparent bar, pills float on top ────────────── */
 window#waybar {
     background: transparent;
-    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", "Noto Sans", sans-serif;
+    font-family:
+        "JetBrainsMono Nerd Font", "JetBrains Mono", "Noto Sans", sans-serif;
     font-size: 16px;
     font-weight: 600;
     color: @text;
@@ -55,8 +56,10 @@ tooltip label {
 
 /* ── Base Pill Shape ──────────────────────────────────────────── */
 #workspaces,
-#window,
 #clock,
+#mpris,
+#backlight,
+#bluetooth,
 #battery,
 #cpu,
 #memory,
@@ -69,6 +72,7 @@ tooltip label {
     margin: 6px 3px;
     border-radius: 10px;
     background: @surface0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
     transition: all 250ms ease;
 }
 
@@ -81,7 +85,7 @@ tooltip label {
     font-size: 15px;
     color: @mauve;
     background: @surface0;
-    padding: 0 10px;
+    padding: 0 13px 0 7px;
     margin-left: 4px;
 }
 
@@ -126,22 +130,6 @@ tooltip label {
     animation: pulse 1.5s ease-in-out infinite;
 }
 
-/* ── Window Title ─────────────────────────────────────────────── */
-#window {
-    color: @subtext0;
-    font-weight: 500;
-    font-size: 12px;
-    background: @surface0;
-    padding: 0 16px;
-}
-
-window#waybar.empty #window {
-    background: transparent;
-    opacity: 0;
-    padding: 0;
-    margin: 0;
-}
-
 /* ═══════════════════════════════════════════════════════════════
    CENTER — Clock
    ═══════════════════════════════════════════════════════════════ */
@@ -161,6 +149,49 @@ window#waybar.empty #window {
 /* ═══════════════════════════════════════════════════════════════
    RIGHT — Status pills
    ═══════════════════════════════════════════════════════════════ */
+
+/* ── MPRIS ────────────────────────────────────────────────────── */
+#mpris {
+    color: @bg-solid;
+    background: @pink;
+}
+
+#mpris:hover {
+    background: @lavender;
+}
+
+#mpris.disconnected,
+#mpris.stopped {
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* ── Backlight ────────────────────────────────────────────────── */
+#backlight {
+    color: @bg-solid;
+    background: @peach;
+}
+
+#backlight:hover {
+    background: @yellow;
+}
+
+/* ── Bluetooth ────────────────────────────────────────────────── */
+#bluetooth {
+    color: @bg-solid;
+    background: @lavender;
+}
+
+#bluetooth:hover {
+    background: @blue;
+}
+
+#bluetooth.connected {
+    background: @sapphire;
+}
 
 /* ── Tray ─────────────────────────────────────────────────────── */
 #tray {
@@ -222,7 +253,7 @@ window#waybar.empty #window {
 #network {
     color: @bg-solid;
     background: @mauve;
-    padding: 0 14px;
+    padding: 0 17px 0 11px;
 }
 
 #network:hover {
