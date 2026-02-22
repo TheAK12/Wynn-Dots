@@ -109,7 +109,7 @@ tooltip label {
     font-size: 12px;
     font-weight: 600;
     min-width: 24px;
-    transition: all 250ms ease;
+    transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.15);
 }
 
 #workspaces button:hover {
@@ -121,7 +121,7 @@ tooltip label {
     color: @bg-solid;
     background: @mauve;
     font-weight: 700;
-    min-width: 26px;
+    min-width: 48px;
 }
 
 #workspaces button.urgent {
