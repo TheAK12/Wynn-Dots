@@ -112,7 +112,7 @@ input {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 10
+    gaps 7
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -168,7 +168,7 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        active-color "#7fc8ff"
+        active-color "#cba6f7"
 
         // Color of the ring on inactive monitors.
         //
@@ -278,7 +278,6 @@ spawn-sh-at-startup "avizo-service"
 spawn-at-startup "dunst"
 spawn-sh-at-startup "eww open-many calendar uptime clock battery-volume music-player system-monitor" 
 
-
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
@@ -354,6 +353,60 @@ window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
 }
+window-rule{
+  match app-id="com.mitchellh.ghostty"
+  opacity 0.88
+  geometry-corner-radius 12
+  background-effect {
+    blur true
+    noise 0.05
+    saturation 3
+  }
+}
+layer-rule {
+    match namespace="waybar"
+    match at-startup=true
+    match layer="top"
+
+    // Properties that apply continuously.
+    opacity 0.9
+    geometry-corner-radius 12
+    place-within-backdrop true
+
+    background-effect {
+        blur true
+        noise 0.05
+        saturation 3
+    }
+}
+layer-rule {
+    match namespace="gtk-layer-shell"
+    match at-startup=true
+    match layer="bottom"
+    geometry-corner-radius 12
+    opacity 0.9
+    background-effect {
+        blur true
+        noise 0.05
+  }
+}
+
+
+layer-rule {
+  match namespace="vicinae"
+  match at-startup=true
+  opacity 0.85
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
+
+debug {
+	honor-xdg-activation-with-invalid-serial
+}
+
 
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
@@ -370,7 +423,6 @@ binds {
     // shows a list of important hotkeys.
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+Space repeat=false { spawn "vicinae" "toggle"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
@@ -383,7 +435,7 @@ binds {
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
     // For example, this is a standard bind to toggle the screen reader (orca).
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
-
+    Mod+Shift+S { spawn "~/.config/niri/autostart/screenshot.sh"; }
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
@@ -614,8 +666,6 @@ binds {
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
-    // OCR Tool
-    Mod+Shift+S { spawn "~/.config/niri/autostart/screenshot.sh"; }
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
     // so they may, for example, forward the key presses as-is to a remote machine.
@@ -629,7 +679,7 @@ binds {
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+E { quit; }
     Ctrl+Alt+Delete { quit; }
-    Mod+Shift+S { spawn "~/.config/niri/autostart/screenshot.sh"; }
+
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
