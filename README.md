@@ -1,5 +1,8 @@
+
 # Wynn-Dots
 My Niri Setup
+<img width="1920" height="1075" alt="image" src="https://github.com/user-attachments/assets/a489d583-9e9c-4377-8e9e-2d7ac02bac5d" />
+
 ## Waybar Guide
 
 For detailed instructions on configuring Waybar, see the [Waybar README](.config/waybar/README.md).
