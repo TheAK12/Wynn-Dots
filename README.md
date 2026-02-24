@@ -13,3 +13,7 @@ For detailed instructions on configuring eww, see the [Eww README](.config/eww/R
 ## Wallpaper Guide
 Use the webp wallpapers with swww utility to set them as animated wallpaper for the desktop.
 You can access swww repo here : [swww repo](https://github.com/LGFae/swww).
+
+## Niri Guide
+
+For detailed instructions on configuring Niri, see the [Niri README](.config/niri/README.md).
